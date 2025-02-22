@@ -13,10 +13,14 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MedicationDescription)
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.DescriptionSortParm">
+                    @Html.DisplayNameFor(model => model.MedicationDescription)
+                </a>
             </th>
             <th class="text-end">
-                @Html.DisplayNameFor(model => model.MedicationCost)
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.CostSortParm">
+                    @Html.DisplayNameFor(model => model.MedicationCost)
+                </a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PackageSize)

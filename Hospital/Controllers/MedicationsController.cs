@@ -20,9 +20,29 @@ namespace Hospital.Controllers
         }
 
         // GET: Medications
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            return View(await _context.Medications.ToListAsync());
+            ViewBag.DescriptionSortParm = string.IsNullOrEmpty(sortOrder) ? "description_desc" : "";
+            ViewBag.CostSortParm = sortOrder == "cost" ? "cost_desc" : "cost";
+            var medications = from m
+                               in _context.Medications
+                              select m;
+            switch (sortOrder) {
+                case "description_desc":
+                medications = medications.OrderByDescending(m => m.MedicationDescription);
+                break;
+                case "cost":
+                medications = medications.OrderBy(m => m.MedicationCost);
+                break;
+                case "cost_desc":
+                medications = medications.OrderByDescending(m => m.MedicationCost);
+                break;
+                default:
+                medications = medications.OrderBy(m => m.MedicationDescription);
+                break;
+            }
+
+            return View(await medications.AsNoTracking().ToListAsync());
         }
 
         // GET: Medications/Details/5
