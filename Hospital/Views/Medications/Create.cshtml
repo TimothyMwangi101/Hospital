@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>@ViewBag.Title Medication</h1>
 
 <h4>Medication</h4>
 <hr />
@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="MedicationDescription" class="control-label"></label>
-                <input asp-for="MedicationDescription" class="form-control" />
+                <input asp-for="MedicationDescription" class="form-control" autofocus />
                 <span asp-validation-for="MedicationDescription" class="text-danger"></span>
             </div>
             <div class="form-group">

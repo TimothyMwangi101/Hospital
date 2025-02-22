@@ -139,14 +139,27 @@ namespace Hospital.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var medication = await _context.Medications.FindAsync(id);
-            if (medication != null)
-            {
-                _context.Medications.Remove(medication);
-            }
+            try {
+                if(_context.Medications == null) {
+                    return Problem("Entity set 'ChdbContext.Medications' is null");
+                }
+                var medication = await _context.Medications.FindAsync(id);
+                if (medication != null) {
+                    _context.Medications.Remove(medication);
+                }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            } catch {
+                var medication = await _context.Medications.FindAsync(id);
+                if (medication != null) {
+                    ViewBag.ErrorMessage = $"Unable to delete {medication.MedicationDescription}. It is referenced by other data in the system";
+                } else {
+                    ViewBag.ErrorMessage = $"Unable to delete medication id {id}. It is referenced by other data in the system.";
+                }
+
+                return View("Error", new ErrorViewModel());
+            }
         }
 
         private bool MedicationExists(int id)

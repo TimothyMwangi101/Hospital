@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Hospital.Models.Medication>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Medications";
 }
 
-<h1>Index</h1>
+<h1>@ViewBag.Title</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -15,25 +15,21 @@
             <th>
                 @Html.DisplayNameFor(model => model.MedicationDescription)
             </th>
-            <th>
+            <th class="text-end">
                 @Html.DisplayNameFor(model => model.MedicationCost)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PackageSize)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Strength)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sig)
-            </th>
-            <th>
+            <th class="text-end">
                 @Html.DisplayNameFor(model => model.UnitsUsedYtd)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LastPrescribedDate)
             </th>
-            <th></th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -42,19 +38,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.MedicationDescription)
             </td>
-            <td>
+            <td class="text-end">
                 @Html.DisplayFor(modelItem => item.MedicationCost)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PackageSize)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Strength)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sig)
-            </td>
-            <td>
+            <td class="text-end">
                 @Html.DisplayFor(modelItem => item.UnitsUsedYtd)
             </td>
             <td>
