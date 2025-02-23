@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Hospital.Models.Medication>
+﻿@model Hospital.Controllers.PaginatedList<Medication>
 
 @{
     ViewData["Title"] = "Medications";
@@ -24,22 +24,22 @@
         <tr>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewBag.DescriptionSortParm" asp-route-searchString="@ViewBag.SearchString">
-                    @Html.DisplayNameFor(model => model.MedicationDescription)
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().MedicationDescription)
                 </a>
             </th>
             <th class="text-end">
                 <a asp-action="Index" asp-route-sortOrder="@ViewBag.CostSortParm" asp-route-searchString="@ViewBag.SearchString">                    
-                    @Html.DisplayNameFor(model => model.MedicationCost)
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().MedicationCost)
                 </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PackageSize)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().PackageSize)
             </th>
             <th class="text-end">
-                @Html.DisplayNameFor(model => model.UnitsUsedYtd)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().UnitsUsedYtd)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastPrescribedDate)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().LastPrescribedDate)
             </th>
             <th>
                 Actions
@@ -47,29 +47,60 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MedicationDescription)
-            </td>
-            <td class="text-end">
-                @Html.DisplayFor(modelItem => item.MedicationCost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PackageSize)
-            </td>
-            <td class="text-end">
-                @Html.DisplayFor(modelItem => item.UnitsUsedYtd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastPrescribedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MedicationId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MedicationId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MedicationId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MedicationDescription)
+                </td>
+                <td class="text-end">
+                    @Html.DisplayFor(modelItem => item.MedicationCost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PackageSize)
+                </td>
+                <td class="text-end">
+                    @Html.DisplayFor(modelItem => item.UnitsUsedYtd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastPrescribedDate)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MedicationId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MedicationId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MedicationId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@{
+    string prevDisabled = Model.HasPreviousPage ? string.Empty : "Disabled";
+    string nextDisabled = Model.HasNextPage ? string.Empty : "Disabled";
+}
+
+<ul class="pagination justify-content-center">
+    <li class="page-item @prevDisabled">
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewBag.SortOrder"
+           asp-route-searchString="@ViewBag.SearchString"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           class="page-link">Previous</a>
+    </li>
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewBag.SortOrder"
+               asp-route-searchString="@ViewBag.SearchString"
+               asp-route-pageNumber="@i"
+               class="page-link">@i</a>
+        </li>
+    }
+    <li class="page-item @nextDisabled">
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewBag.SortOrder"
+           asp-route-searchString="@ViewBag.SearchString"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           class="page-link">Next</a>
+    </li>
+</ul>

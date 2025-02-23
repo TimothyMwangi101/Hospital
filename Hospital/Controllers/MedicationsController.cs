@@ -20,8 +20,9 @@ namespace Hospital.Controllers
         }
 
         // GET: Medications
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string searchString, int? pageNumber)
         {
+            ViewBag.SortOrder = sortOrder;
             ViewBag.DescriptionSortParm = string.IsNullOrEmpty(sortOrder) ? "description_desc" : "";
             ViewBag.CostSortParm = sortOrder == "cost" ? "cost_desc" : "cost";
             ViewBag.SearchString = searchString;
@@ -46,7 +47,7 @@ namespace Hospital.Controllers
                 break;
             }
 
-            return View(await medications.AsNoTracking().ToListAsync());
+            return View(await PaginatedList<Medication>.CreateAsync(medications.AsNoTracking(), pageNumber ?? 1, 10));
         }
 
         // GET: Medications/Details/5
