@@ -20,13 +20,17 @@ namespace Hospital.Controllers
         }
 
         // GET: Medications
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewBag.DescriptionSortParm = string.IsNullOrEmpty(sortOrder) ? "description_desc" : "";
             ViewBag.CostSortParm = sortOrder == "cost" ? "cost_desc" : "cost";
+            ViewBag.SearchString = searchString;
             var medications = from m
-                               in _context.Medications
+                              in _context.Medications
                               select m;
+            if (!string.IsNullOrEmpty(searchString)) {
+                medications = medications.Where(m => m.MedicationDescription.ToLower().Contains(searchString.ToLower()));
+            }
             switch (sortOrder) {
                 case "description_desc":
                 medications = medications.OrderByDescending(m => m.MedicationDescription);

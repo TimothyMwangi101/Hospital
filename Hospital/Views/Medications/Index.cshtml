@@ -9,16 +9,26 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <p>
+        Search by Description:
+        <input type="text" name="searchString" value="@ViewBag.SearchString" autofocus />
+        <input type="submit" value="Search" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-primary">Reset Search</a>
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewBag.DescriptionSortParm">
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.DescriptionSortParm" asp-route-searchString="@ViewBag.SearchString">
                     @Html.DisplayNameFor(model => model.MedicationDescription)
                 </a>
             </th>
             <th class="text-end">
-                <a asp-action="Index" asp-route-sortOrder="@ViewBag.CostSortParm">
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.CostSortParm" asp-route-searchString="@ViewBag.SearchString">                    
                     @Html.DisplayNameFor(model => model.MedicationCost)
                 </a>
             </th>
